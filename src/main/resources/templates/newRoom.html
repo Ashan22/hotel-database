@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Room</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form  th:object="${room}" th:action="@{/room}" method="post">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p>Please Correct Errors Below</p>
+                </div>
+                <input type="hidden" th:field="*{idRoom}"/>
+                <div class="pannel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">New Room</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Room number:</label>
+                                    <input type="number" class="form-control" th:field="*{roomNumber}"th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('roomNumber')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('roomNumber')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Floor:</label>
+                                    <input type="number" class="form-control" th:field="*{floor}"th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('floor')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('floor')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Room Type:</label>
+                                    <select class="form-control" th:field="*{roomType}" />
+                                        <option th:if="${not #lists.isEmpty(default)}"
+                                                th:each="type : ${types}"
+                                                th:value="${type.idRoomType}"
+                                                th:selected="${type.idRoomType == default.idRoomType}"
+                                                th:text="${' max_people:'+ type.maxPeople +' cost:'+type.cost}">Each</option>
+                                        <option th:if="${#lists.isEmpty(default)}"
+                                                th:each="type : ${types}"
+                                                th:value="${type.idRoomType}"
+                                                th:text="${' max_people:'+ type.maxPeople +' cost:'+type.cost}">Each</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Availability:</label>
+                                    <select th:field="*{availability}">
+                                        <option th:value="Vacant" th:text="Vacant">Vacant</option>
+                                        <option th:value="Occupied" th:text="Occupied">Occupied</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
